@@ -1,5 +1,5 @@
 %**************
-% Czech Republic
+% Colombian Republic
 %**************
 
 close all;
@@ -121,12 +121,6 @@ end
 d.PREM = d.RR_BAR - d.RR_RW_BAR - d.DLA_Z_BAR;
 d.SHKN_PREM = tseries(get(d.L_S,'range'),0);
 
-%% Inflation target (history) - not applied for the Czech Republic (target is known)
-% d.D4L_CPI_TAR = hpf(d.DLA_CPI);
-
-% % If you want use a different number for the end value (there is 10 as a proxy) change the first lines 
-% PRIOR_CPI = tseries(get(d.DLA_CPI,'end'),10);
-% d.D4L_CPI_TAR = hpf(d.DLA_CPI, Inf, 'level=', PRIOR_CPI);
 
 %% Compute the exchange rate target over the history (not applied for the Czech case except the period of the FX commitment)
 % Exchange rate target is automatically calculated as to equal observed
@@ -147,41 +141,7 @@ d.L_RPF_BAR = d.L_RPF - d.L_RPF_GAP;
 d.DLA_RPXFE_BAR = 4*(d.L_RPXFE_BAR - d.L_RPXFE_BAR{-1});
 d.DLA_RPF_BAR = 4*(d.L_RPF_BAR - d.L_RPF_BAR{-1});
 
-%% Expert TUNES
-% % Domestic GDP gap (history)
-% % If you want use a different number for the end value change the first line 
-% prior_DLA_GDP_BAR = tseries(get(d.L_GDP,'end'), 0);
-% [d.L_GDP_BAR, d.L_GDP_GAP] = hpf(d.L_GDP, inf, 'growth', prior_DLA_GDP_BAR);
 
-% d.DLA_GDP_BAR = 4*(d.L_GDP_BAR - d.L_GDP_BAR{-1});
-% d.D4L_GDP_BAR = d.L_GDP_BAR - d.L_GDP_BAR{-4};
-
-% Foreign RR gap (history)
-% If you want use a different number for the end value change the first line 
-% prior_RR_RW_BAR = tseries(qq(2008,4):get(d.RR_RW, 'end'), 0);
-% [d.RR_RW_BAR, d.RR_RW_GAP] = hpf(d.RR_RW, inf, 'level', prior_RR_RW_BAR);
-
-% % Foreign GDP gap (history)
-% % If you want use a different number for the end value change the first line 
-% prior_DLA_GDP_RW_BAR = tseries(get(d.L_GDP_RW,'end'), 0);
-% [d.L_GDP_RW_BAR, d.L_GDP_RW_GAP] = hpf(d.L_GDP_RW, inf, 'growth', prior_DLA_GDP_RW_BAR);
-% 
-% d.DLA_GDP_RW_BAR = 4*(d.L_GDP_RW_BAR - d.L_GDP_RW_BAR{-1});
-% d.D4L_GDP_RW_BAR = d.L_GDP_RW_BAR - d.L_GDP_RW_BAR{-4};
-
-%% Workshop 4, Q3 - Bonus question
-% d.PRIOR_DLA_GDP_BAR = tseries(qq(2020,1):qq(2020,4), [0.021991, 0.004247, -0.005128, -0.009487]); % prior for the EA gap
-% [d.L_GDP_RW_BAR, d.L_GDP_RW_GAP] = hpf(d.L_GDP, Inf, 'level=', d.PRIOR_DLA_GDP_BAR); % run HP filter using the prior
-
-% % The EA gap taken from GPM September 2018
-% d.PRIOR_L_GDP_RW_GAP = tseries(qq(2017,4):qq(2018,3), [-0.8, -0.8, -0.8, -0.8]); % prior for the EA gap
-% [d.L_GDP_RW_BAR, d.L_GDP_RW_GAP] = hpf(d.L_GDP_RW, Inf, 'level=', d.L_GDP_RW-d.PRIOR_L_GDP_RW_GAP); % run HP filter using the prior
-% d.L_GDP_RW_BAR = hpf(d.L_GDP_RW_GAP, Inf, 'lambda=', 1); % smooth the gap
-% d.L_GDP_RW_BAR = hpf((d.L_GDP_RW-d.L_GDP_RW_GAP), Inf, 'lambda=', 5); % smooth the trend
-% 
-% d.DLA_GDP_RW_BAR = 4*(d.L_GDP_RW_BAR - d.L_GDP_RW_BAR{-1});
-% d.D4L_GDP_RW_BAR = d.L_GDP_RW_BAR - d.L_GDP_RW_BAR{-4};
-%-----------
 %% Save the database
 % Database is saved in file 'history.csv'
 %dbsave(d,'history.csv');
@@ -189,8 +149,8 @@ databank.toCSV(d,'history.csv');
 
 %% Report - Stylized Facts
 % Specify country
-country = 'The Czech Republic - Stylized Facts';
-exchange = 'CZK/EUR';
+country = 'The Colombian Republic - Stylized Facts';
+exchange = 'COP/USD';
 
 % Report
 x = report.new(country);
@@ -216,7 +176,7 @@ x.series('',[d.D4L_CPI d.D4L_CPI_TAR],'Legend=',{'Inflation','Inflation Target'}
 x.graph('Nominal Interest Rate, percent p.a.','legend',false);
 x.series('',[d.RS]);
  
- x.graph('NER Depreciation - CZK/EUR, percent','legend',true);
+ x.graph('NER Depreciation - COP/USD, percent','legend',true);
  x.series('',[d.DLA_S d.D4L_S],'Legend=', {'q-o-q','y-o-y'});
  
  x.graph('NER - CZK/EUR','legend',false);
